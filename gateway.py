@@ -1,11 +1,10 @@
 from flask import *
-from flask_api import *
 from flask import request
 from flask import jsonify
 import os
 from paho import mqtt
 
-app = FlaskAPI(__name__)
+app = Flask(__name__)
 
 
 JSON = [{
