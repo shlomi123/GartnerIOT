@@ -2,6 +2,8 @@ from flask import *
 from flask_api import *
 from flask import request
 from flask import jsonify
+import os
+from paho import mqtt
 
 app = FlaskAPI(__name__)
 
@@ -24,4 +26,4 @@ def save_json():
     JSON.append(content)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=os.environ.get("PORT", 5000))
