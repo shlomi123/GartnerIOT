@@ -25,5 +25,4 @@ def save_json():
     content = request.get_json()
     JSON.append(content)
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=os.environ.get("PORT", 5000))
+app.run(host='0.0.0.0', port=os.environ.get("PORT", 5000))
