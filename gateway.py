@@ -1,27 +1,30 @@
 from flask import *
-from flask import request
-from flask import jsonify
-import os
-from paho import mqtt
-
-app = Flask(__name__)
+from mqtt import MqttClient
+import Credentials
+from MSg import Msg
 
 
-JSON = [{
- "name": "John",
- "age": 30,
- "cars": ["Ford", "BMW", "Fiat"]
-}]
+class Server(object):
+    """Server class"""
+    app = Flask(__name__)
+    MQTTC = MqttClient()
+
+    @app.route("/")
+    def hello(self):
+        """default"""
+        return "Hello World!"
+
+    @app.route("/webhook", methods=['GET'])
+    def verify(self):
+        """webhook api"""
+        return request.args.get('hub.challenge')
+
+    @app.route("/webhook", methods=['POST'])
+    def fb_feeds_webhook(self):
+        """webhook api"""
+        content = request.get_json()
+        if content['entry'][0]['changes'][0]['value']['item'] == 'like':
+            Server.MQTTC.publish(Credentials.MQTT_FB_WEBHOOK_TOPIC_NAME, Msg(int(content['entry'][0]['time']),
+            'LIKE', content['entry'][0]['changes'][0]['value']['user_id']))
 
 
-@app.route("/", methods=['GET'])
-def send_json():
-    return jsonify({'json': JSON})
-
-
-@app.route("/", methods=['POST'])
-def save_json():
-    content = request.get_json()
-    JSON.append(content)
-
-app.run(host='0.0.0.0', port=os.environ.get("PORT", 5000))
