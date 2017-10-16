@@ -1,7 +1,5 @@
 from gateway import Server
 import Credentials
-from mqtt import MqttClient
-from MSg import Msg
 
 # pylint: disable=invalid-name
 server = Server()
