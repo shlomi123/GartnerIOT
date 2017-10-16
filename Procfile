@@ -1,2 +1,2 @@
-web: python main.py
+web: python gateway.py
 web: python mqtt.py
